@@ -4,13 +4,11 @@ void * ft_memmove(void *dst, const void *src, size_t len)
 {
     unsigned char   *d;
     const unsigned char *s = (const unsigned char *)src;
-    size_t l;
 
     d = (unsigned char   *)dst;
-    l = 0;
     if(!d && !s)
         return NULL;
-    if(s < d) // work as overlap in memcpy
+    if(d < s) // work as overlap in memcpy
     {
         while(len > 0)
         {
@@ -22,12 +20,14 @@ void * ft_memmove(void *dst, const void *src, size_t len)
     }
     else
     {
-        while(l < len) // memory overlap protection
+        s = s + (len - 1);
+        d = d + (len - 1);
+        while(len > 0) // memory overlap protection
         {
            *d = *s;
-           d++;
-           s++;
-           l++;
+           d--;
+           s--;
+           len--;
         }
     }
     return dst;
